@@ -4,17 +4,14 @@
 # 0xC  -- number of measurement records(int32)
 # 0x30 -- time stamp (character) in format '%d-%m-%y%H:M.%S'
 # 0x88 -- begin of measurement records (32 signed ints)
-
-#------------------------------------------------------------
-# установка рабочего места и временной зоны
-
 setwd("E:/Work/Projects/FocusGC/")
-Sys.setenv(TZ="Europe/Minsk")
 
 #------------------------------------------------------------
 # функция для работы с файлами 
 
 ch.update <- function(file.src){
+  # вообще-то непонятно, надо так делать или не надо так делать
+  Sys.setenv(TZ="Europe/Minsk")
   
   file.new.name <- sprintf("%s.res.dat", strsplit(file.src, "\\.")[[1]][1])
   file.copy(file.src, file.new.name, overwrite=T)
@@ -58,7 +55,17 @@ ch.update <- function(file.src){
 }
 
 #------------------------------------------------------------
-# работа с файлами
+# обработка данных
 
-a <- ch.update("1.dat")
+a <- ch.update("2.dat")
 plot(a, type = "l", ylim = c(0, mean(a)/2))
+
+
+
+
+
+
+
+
+
+
