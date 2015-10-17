@@ -60,12 +60,14 @@ ch.update <- function(file.src){
 a <- ch.update("2.dat")
 plot(a, type = "l", ylim = c(0, mean(a)/2))
 
+a.target = a[35001:45000]
 
+m = 1.0
+x = seq(0, pi, by = pi/(length(a.target)-1))
+p = sin(x)*m+1; #plot(p, type = "l")
 
-
-
-
-
-
-
+b <- c(a[0:35000],
+       a.target*p,
+       a[45001:69954])
+plot(b, type = "l", ylim = c(0, mean(a)/2))
 
