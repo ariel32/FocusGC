@@ -9,11 +9,11 @@ setwd("E:/Work/Projects/FocusGC/")
 #------------------------------------------------------------
 # функция для работы с файлами
 
-ch.update <- function(file.src){
+ch.update <- function(file.src, start, end, m = 1, overwrite = F){
   # вообще-то непонятно, надо так делать или не надо так делать
   Sys.setenv(TZ="Europe/Minsk")
-  
-  file.new.name <- sprintf("%s.res.dat", strsplit(file.src, "\\.")[[1]][1])
+  # даем новое имя файлу
+  file.new.name <- sprintf("%s.new.dat", strsplit(file.src, "\\.")[[1]][1])
   file.copy(file.src, file.new.name, overwrite=T)
   file.src <- file(file.new.name,'r+b')
   
@@ -45,13 +45,26 @@ ch.update <- function(file.src){
   mes.data <- readBin(file.src,integer(),num.of.records)/0.4
   #std <- sd(mes.data[mes.data <= median(mes.data)])
   #mes.data <- mes.data + (std - runif(num.of.records,max=1.96*std))
-
-  writeBin(as.integer(mes.data*0.4),file.dst)
-
+  
+  # изменяем данные
+  if(overwrite == T) {
+    mes.data.target = mes.data[start:end]
+    
+    x = seq(0, pi, by = pi/(length(mes.data.target)-1))
+    p = sin(x)*m+1; #plot(p, type = "l")
+    
+    mes.data <- c(mes.data[0:(start-1)],
+                mes.data.target*p,
+                mes.data[(end+1):length(mes.data)])
+    
+    writeBin(as.integer(mes.data*0.4),file.dst)
+    
+  }
+  plot(mes.data, type = "l", ylim = c(0, mean(mes.data)/2))
   # final padding
   #seek(file.src,0x88 + num.of.records * 4,origin='start')
   close(file.src)
-  return(mes.data)
+  #return(mes.data)
 }
 
 #------------------------------------------------------------
