@@ -4,7 +4,8 @@
 # 0xC  -- number of measurement records(int32)
 # 0x30 -- time stamp (character) in format '%d-%m-%y%H:M.%S'
 # 0x88 -- begin of measurement records (32 signed ints)
-setwd("E:/Work/Projects/FocusGC/")
+#setwd("E:/work/Projects/FocusGC/")
+setwd("E:/work/FocusGC/")
 
 #------------------------------------------------------------
 # функция для работы с файлами
@@ -64,7 +65,7 @@ ch.update <- function(file.src, start, end, m = 1, overwrite = F){
   # final padding
   #seek(file.src,0x88 + num.of.records * 4,origin='start')
   close(file.src)
-  #return(mes.data)
+  return(mes.data)
 }
 
 #------------------------------------------------------------
