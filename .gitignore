@@ -1,7 +1,4 @@
 .Rproj.user
 .Rhistory
 .RData
-1.dat
-1.new.dat
-2.dat
-2.new.dat
+*.dat
