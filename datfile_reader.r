@@ -1,16 +1,16 @@
-#------------------------------------------------------------
-# константы
-
-# 0xC  -- number of measurement records(int32)
-# 0x30 -- time stamp (character) in format '%d-%m-%y%H:M.%S'
-# 0x88 -- begin of measurement records (32 signed ints)
 #setwd("E:/work/Projects/FocusGC/")
 setwd("E:/work/FocusGC/")
 
 #------------------------------------------------------------
-# функция для работы с файлами
+# объявление функции
 
-ch.update <- function(file.src, start, end, m = 1, overwrite = F){
+ch.update <- function(file.src, t.s = 1, t.e = 1, t.a = 1, m = 1, overwrite = F){
+  # константы
+  
+  # 0xC  -- number of measurement records(int32)
+  # 0x30 -- time stamp (character) in format '%d-%m-%y%H:M.%S'
+  # 0x88 -- begin of measurement records (32 signed ints)
+  
   # вообще-то непонятно, надо так делать или не надо так делать
   Sys.setenv(TZ="Europe/Minsk")
   # даем новое имя файлу
@@ -20,6 +20,10 @@ ch.update <- function(file.src, start, end, m = 1, overwrite = F){
   
   file.dst <- file.src
 
+  # парсим диапазон пика
+  start = t.s/t.a*length(a)
+  end = t.e/t.a*length(a)
+  
   # padding from beginning 
   #seek(file.src,where=0x0,origin='start')
   #writeBin(readBin(file.src,raw(),0xb),file.dst)
@@ -69,19 +73,24 @@ ch.update <- function(file.src, start, end, m = 1, overwrite = F){
 }
 
 #------------------------------------------------------------
-# обработка данных a
+# обработка данных
 
-a <- ch.update("2.dat")
-plot(a, type = "l", ylim = c(0, mean(a)/2))
+a <- ch.update("Standarts.dat")
 
-a.target = a[35001:45000]
+library(ptw)
+plot(a, type = "l", ylim = c(0, 25000))
+a.blc = baseline.corr(a)
+lines(a.blc, col = 2)
+plot(a.blc, type = "l", ylim = c(0, 25000))
 
-m = 1.0
-x = seq(0, pi, by = pi/(length(a.target)-1))
-p = sin(x)*m+1; #plot(p, type = "l")
 
-b <- c(a[0:35000],
-       a.target*p,
-       a[45001:69954])
-plot(b, type = "l", ylim = c(0, mean(a)/2))
+# 46.091*60 = 2765
+#C12 - 12.15m - 12.15*60 = 729
+# 69137/2765*729
+C12 <- 15000:16400
+
+# 16.1420 - 16.5160 - 46.014
+a <- ch.update("V50.dat", 16.1420, 16.5160, 46.014, 11, T)
+
+
 
