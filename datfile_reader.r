@@ -16,14 +16,11 @@ ch.update <- function(file.src, t.s = 1, t.e = 1, t.a = 1, m = 1, overwrite = F)
   # даем новое имя файлу
   file.new.name <- sprintf("%s.new.dat", strsplit(file.src, "\\.")[[1]][1])
   file.copy(file.src, file.new.name, overwrite=T)
+  
   file.src <- file(file.new.name,'r+b')
   
   file.dst <- file.src
 
-  # парсим диапазон пика
-  start = t.s/t.a*length(a)
-  end = t.e/t.a*length(a)
-  
   # padding from beginning 
   #seek(file.src,where=0x0,origin='start')
   #writeBin(readBin(file.src,raw(),0xb),file.dst)
@@ -51,6 +48,9 @@ ch.update <- function(file.src, t.s = 1, t.e = 1, t.a = 1, m = 1, overwrite = F)
   #std <- sd(mes.data[mes.data <= median(mes.data)])
   #mes.data <- mes.data + (std - runif(num.of.records,max=1.96*std))
   
+  # парсим диапазон пика
+  start = t.s/t.a*length(mes.data)
+  end = t.e/t.a*length(mes.data)
   # изменяем данные
   if(overwrite == T) {
     mes.data.target = mes.data[start:end]
@@ -61,11 +61,11 @@ ch.update <- function(file.src, t.s = 1, t.e = 1, t.a = 1, m = 1, overwrite = F)
     mes.data <- c(mes.data[0:(start-1)],
                 mes.data.target*p,
                 mes.data[(end+1):length(mes.data)])
-    
-    writeBin(as.integer(mes.data*0.4),file.dst)
+    k = seq(1, length(mes.data))/(tail(mes.data,1)*0.25)
+    writeBin(as.integer(mes.data*0.4+k),file.dst)
     
   }
-  plot(mes.data, type = "l", ylim = c(0, mean(mes.data)/2))
+  #plot(mes.data, type = "l", ylim = c(0, mean(mes.data)/2))
   # final padding
   #seek(file.src,0x88 + num.of.records * 4,origin='start')
   close(file.src)
@@ -75,22 +75,14 @@ ch.update <- function(file.src, t.s = 1, t.e = 1, t.a = 1, m = 1, overwrite = F)
 #------------------------------------------------------------
 # обработка данных
 
-a <- ch.update("Standarts.dat")
+a <- ch.update("D:/H19.dat")
 
 library(ptw)
 plot(a, type = "l", ylim = c(0, 25000))
 a.blc = baseline.corr(a)
 lines(a.blc, col = 2)
 plot(a.blc, type = "l", ylim = c(0, 25000))
-
-
-# 46.091*60 = 2765
-#C12 - 12.15m - 12.15*60 = 729
-# 69137/2765*729
-C12 <- 15000:16400
-
-# 16.1420 - 16.5160 - 46.014
-a <- ch.update("V50.dat", 16.1420, 16.5160, 46.014, 11, T)
+a <- ch.update("D:/V70.dat", 11.8970, 12.2007, 46.666, m = 12.431, T)
 
 
 
