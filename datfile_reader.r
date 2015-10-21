@@ -75,13 +75,20 @@ ch.update <- function(file.src, t.s = 1, t.e = 1, t.a = 1, m = 1, overwrite = F)
 #------------------------------------------------------------
 # обработка данных
 
-a <- ch.update("Standarts.dat")
+a <- ch.update("1.dat")
 
 library(ptw)
-plot(a, type = "l", ylim = c(0, 25000))
-a.blc = baseline.corr(a)
+a.f <- a[10000:length(a)]
+plot(a, type = "l", ylim = c(0, 35000))
+plot(a.f, type = "l", ylim = c(0, 25000))
+a.blc = baseline.corr(a.f)
 lines(a.blc, col = 2)
-plot(a.blc, type = "l", ylim = c(0, 25000))
+
+k = seq(1, 5001, 5000/length(a))
+k = k[1:length(k)-1]
+an = c(a[1:9999], a.blc+median(a[1:10000]))
+an = an*k
+plot(an, type = "l", ylim = c(0, 25000))
 
 
 # 46.091*60 = 2765
