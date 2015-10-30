@@ -82,7 +82,7 @@ plot(a, type = "l", ylim = c(0, 25000))
 a.blc = baseline.corr(a)
 lines(a.blc, col = 2)
 plot(a.blc, type = "l", ylim = c(0, 25000))
-a <- ch.update("D:/V70.dat", 11.8970, 12.2007, 46.666, m = 12.431, T)
+a <- ch.update("D:/V85.dat", 12.4933, 13.2900, 46.666, m = 1.431, T)
 
 
 
