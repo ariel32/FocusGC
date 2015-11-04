@@ -15,7 +15,7 @@ ch.gen <- function(file.src, FA.df, all){
   # для колдовства нужен дата фрейм - FA.df
   
   # даем новое имя файлу
-  file.new.name <- sprintf("%s.new.dat", strsplit(file.src, "\\.")[[1]][1])
+  file.new.name <- sprintf("%s%s.dat", strsplit(file.src, "\\.")[[1]][1], sample(100, 1))
   file.copy(file.src, file.new.name, overwrite=T)
   
   file.src <- file(file.new.name,'r+b')
@@ -55,7 +55,7 @@ ch.gen <- function(file.src, FA.df, all){
     end   = FA.df$end[i]/all*length(mes.data)
     
     mes.data.target = mes.data[start:end]
-    x = seq(0, pi, by = pi/(length(mes.data.target)-1))
+    x = seq(0, pi, length.out = length(mes.data.target))
     p = sin(x)*FA.df$m[i]+1; #plot(p, type = "l")
     
     mes.data <- c(mes.data[0:(start-1)],
@@ -63,7 +63,8 @@ ch.gen <- function(file.src, FA.df, all){
                   mes.data[(end+1):length(mes.data)])
   }
   
-  k = seq(1, length(mes.data))/(tail(mes.data,1)*0.25)
+  k = seq(1, sample(10,1)/10*median(mes.data),
+          length.out = length(mes.data))
   writeBin(as.integer(mes.data*0.4+k), file.dst)
   plot(mes.data, type = "l", ylim = c(0, mean(mes.data)/2))
   # final padding
@@ -73,10 +74,16 @@ ch.gen <- function(file.src, FA.df, all){
 }
 
 
-a = data.frame(start = 12.7200, end = 13.2900, m = 2)  #C12
-a = rbind(a, c(start = 17.0353, end = 17.5520, m = 10))#C14
-a = rbind(a, c(start = 21.7200, end = 22.2500, m = 10))#C16
-a = rbind(a, c(start = 17.0353, end = 17.5520, m = 10))#C18:2n6t
-a = rbind(a, c(start = 17.0353, end = 17.5520, m = 10))#C18:2n6c
-a = rbind(a, c(start = 17.0353, end = 17.5520, m = 10))#C18:3n6
-ch.gen("D:/V106.dat", a, 46.598)
+a = data.frame(start = 12.8200, end = 13.5667, m = sample(1200, 1)/1000)  #C12
+a = rbind(a, c(start = 17.1833, end = 17.4733, m = sample(120, 1)/120))#C14
+a = rbind(a, c(start = 21.7800, end = 22.5833, m = sample(120, 1)/120))#C16
+a = rbind(a, c(start = 22.7900, end = 23.1233, m = sample(100, 1)/100))#C16:1
+a = rbind(a, c(start = 26.3233, end = 26.7967, m = sample(140, 1)/100))#C18:2n6t
+a = rbind(a, c(start = 27.0900, end = 27.9167, m = sample(150, 1)/100))#C18:2n6c
+a = rbind(a, c(start = 28.5033, end = 29.2667, m = sample(160, 1)/100))#C18:3n6
+a = rbind(a, c(start = 30.1767, end = 30.5033, m = sample(120, 1)/100))#C20:1
+a = rbind(a, c(start = 32.7420, end = 33.1900, m = sample(120, 1)/100))#C20:3n6
+a = rbind(a, c(start = 33.5693, end = 33.9140, m = sample(120, 1)/120))#C22:0
+a = rbind(a, c(start = 34.1633, end = 34.5267, m = sample(120, 1)/120))#C20:5n3
+a = rbind(a, c(start = 40.2207, end = 40.6347, m = sample(120, 1)/120))#C22:6n3
+ch.gen("D:/V.dat", a, 46.666)
