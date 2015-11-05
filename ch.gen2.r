@@ -1,6 +1,4 @@
-
-#------------------------------------------------------------
-# объявление функции
+library(XML)
 
 ch.gen <- function(file.src, FA.df, all){
   # константы
@@ -76,17 +74,18 @@ ch.gen <- function(file.src, FA.df, all){
   #return(mes.data)
 }
 
+#file.src = "D:/chs/H105.dat"
+#file.html.src = "D:/chs/H104.HTM"
 
-a = data.frame(start = 12.8200, end = 13.5667, m = (sample(500, 1)-250)/1001)  #C12
-a = rbind(a, c(start = 17.1833, end = 17.4733, m = sample(100, 1)/120))#C14
-a = rbind(a, c(start = 21.7800, end = 22.5833, m = sample(120, 1)/120))#C16
-a = rbind(a, c(start = 22.7900, end = 23.1233, m = sample(100, 1)/100))#C16:1
-a = rbind(a, c(start = 26.3233, end = 26.7967, m = sample(140, 1)/100))#C18:2n6t
-a = rbind(a, c(start = 27.0900, end = 27.9167, m = sample(150, 1)/100))#C18:2n6c
-a = rbind(a, c(start = 28.5033, end = 29.2667, m = sample(160, 1)/100))#C18:3n6
-a = rbind(a, c(start = 30.1767, end = 30.5033, m = sample(120, 1)/100))#C20:1
-a = rbind(a, c(start = 32.7420, end = 33.1900, m = sample(120, 1)/100))#C20:3n6
-a = rbind(a, c(start = 33.5693, end = 33.9140, m = sample(120, 1)/120))#C22:0
-a = rbind(a, c(start = 34.1633, end = 34.5267, m = sample(120, 1)/120))#C20:5n3
-a = rbind(a, c(start = 40.2207, end = 40.6347, m = sample(120, 1)/120))#C22:6n3
-ch.gen("D:/V.dat", a, 46.666)
+z <- dir(path = "D:/chs/src", pattern = "*.HTM", full.names = T)
+for(x in 1:100) {
+file.html.src <- z[sample(length(z),1)]
+file.src <- sprintf("%s.dat", strsplit(file.html.src, split = ".HTM")[[1]])
+fa.table = readHTMLTable(file.html.src, skip.rows = 1:3, header = F,
+                         colClasses = c("factor", "numeric", "numeric"))[[2]]
+
+m = vector(); for(x in 1:nrow(fa.table)) {m = append(m, (sample(500, 1)-250)/1001)}
+fa.table <- fa.table[,2:3]; names(fa.table) <- c("start", "end")
+fa.table <- cbind(fa.table, m = m)
+ch.gen(file.src, fa.table, 46.666)
+}
