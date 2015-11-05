@@ -62,10 +62,13 @@ ch.gen <- function(file.src, FA.df, all){
                   mes.data.target*p,
                   mes.data[(end+1):length(mes.data)])
   }
-  
-  k = seq(1, sample(10,1)/10*median(mes.data),
-          length.out = length(mes.data))
-  writeBin(as.integer(mes.data*0.4+k), file.dst)
+  sim.k.start = sample(length(mes.data)/2,1)+length(mes.data)/4
+  k = rep(0,length(mes.data))
+  k[sim.k.start:length(k)] = seq(1, sample(10,1)/10*median(mes.data),
+                                 length.out = length(mes.data)-sim.k.start)
+  mes.data = mes.data+k
+  mes.data = mes.data[-c(1:sample(1000))]
+  writeBin(as.integer(mes.data*0.4), file.dst)
   plot(mes.data, type = "l", ylim = c(0, mean(mes.data)/2))
   # final padding
   #seek(file.src,0x88 + num.of.records * 4,origin='start')
