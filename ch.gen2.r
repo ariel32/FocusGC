@@ -64,8 +64,8 @@ ch.gen <- function(file.src, FA.df, all){
   k = rep(0,length(mes.data))
   k[sim.k.start:length(k)] = seq(1, sample(10,1)/10*median(mes.data),
                                  length.out = length(mes.data)-sim.k.start)
-  mes.data = mes.data+k
-  mes.data = mes.data[-c(1:sample(1000,1))]
+  ##mes.data = mes.data+k
+  #mes.data = mes.data[-c(1:sample(1000,1))]
   writeBin(as.integer(mes.data*0.4), file.dst)
   plot(mes.data, type = "l", ylim = c(0, mean(mes.data)/2))
   # final padding
@@ -89,3 +89,16 @@ fa.table <- fa.table[,2:3]; names(fa.table) <- c("start", "end")
 fa.table <- cbind(fa.table, m = m)
 ch.gen(file.src, fa.table, 46.666)
 }
+
+#####
+# work with single file
+file.html.src = "04022016_LinumOil2.HTM"
+file.src <- sprintf("%s.dat", strsplit(file.html.src, split = ".HTM")[[1]])
+fa.table = readHTMLTable(file.html.src, skip.rows = 1:3, header = F,
+                         colClasses = c("factor", "numeric", "numeric"))[[2]]
+
+names(fa.table) <- c("name", "start", "end")
+fa.table <- cbind(fa.table, m = 1)
+fa.table <- fa.table[which(fa.table$name == "C20 0"),]
+fa.table$m[which(fa.table$name == "C20 0")] = -1
+ch.gen(file.src, fa.table, 46.666)

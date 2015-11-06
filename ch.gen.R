@@ -89,4 +89,4 @@ a = rbind(a, c(start = 32.7420, end = 33.1900, m = sample(120, 1)/100))#C20:3n6
 a = rbind(a, c(start = 33.5693, end = 33.9140, m = sample(120, 1)/120))#C22:0
 a = rbind(a, c(start = 34.1633, end = 34.5267, m = sample(120, 1)/120))#C20:5n3
 a = rbind(a, c(start = 40.2207, end = 40.6347, m = sample(120, 1)/120))#C22:6n3
-ch.gen("D:/V.dat", a, 46.666)
+ch.gen("LO.dat", a, 46.666)

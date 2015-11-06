@@ -75,7 +75,7 @@ ch.update <- function(file.src, t.s = 1, t.e = 1, t.a = 1, m = 1, overwrite = F)
 #------------------------------------------------------------
 # обработка данных
 
-a <- ch.update("D:/H19.dat")
+a <- ch.update("E:/work/philipp/1.dat")
 
 library(ptw)
 plot(a, type = "l", ylim = c(0, 25000))
