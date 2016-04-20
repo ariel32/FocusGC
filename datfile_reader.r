@@ -75,13 +75,28 @@ ch.update <- function(file.src, t.s = 1, t.e = 1, t.a = 1, m = 1, overwrite = F)
 #------------------------------------------------------------
 # обработка данных
 
+<<<<<<< HEAD
 a <- ch.update("E:/work/philipp/1.dat")
+=======
+<<<<<<< HEAD
+a <- ch.update("1.dat")
+=======
+a <- ch.update("D:/H19.dat")
+>>>>>>> 8d5f03f4ae002b01bd827f84d5d7efe2ed722bd8
+>>>>>>> 756dd80b6eac59f27d88696b6005610965b3cd87
 
 library(ptw)
-plot(a, type = "l", ylim = c(0, 25000))
-a.blc = baseline.corr(a)
+a.f <- a[10000:length(a)]
+plot(a, type = "l", ylim = c(0, 35000))
+plot(a.f, type = "l", ylim = c(0, 25000))
+a.blc = baseline.corr(a.f)
 lines(a.blc, col = 2)
-plot(a.blc, type = "l", ylim = c(0, 25000))
+
+k = seq(1, 5001, 5000/length(a))
+k = k[1:length(k)-1]
+an = c(a[1:9999], a.blc+median(a[1:10000]))
+an = an*k
+plot(an, type = "l", ylim = c(0, 25000))
 
 a <- ch.update("D:/V0.dat", 12.8200, 13.5667, 46.666, m = 3.431, T)
 
