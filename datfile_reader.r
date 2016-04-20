@@ -75,15 +75,8 @@ ch.update <- function(file.src, t.s = 1, t.e = 1, t.a = 1, m = 1, overwrite = F)
 #------------------------------------------------------------
 # обработка данных
 
-<<<<<<< HEAD
-a <- ch.update("E:/work/philipp/1.dat")
-=======
-<<<<<<< HEAD
 a <- ch.update("1.dat")
-=======
-a <- ch.update("D:/H19.dat")
->>>>>>> 8d5f03f4ae002b01bd827f84d5d7efe2ed722bd8
->>>>>>> 756dd80b6eac59f27d88696b6005610965b3cd87
+
 
 library(ptw)
 a.f <- a[10000:length(a)]
