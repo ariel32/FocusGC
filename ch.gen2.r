@@ -92,13 +92,18 @@ ch.gen(file.src, fa.table, 46.666)
 
 #####
 # work with single file
-file.html.src = "04022016_LinumOil2.HTM"
+file.html.src = "E:/Focus GC/Fatty_Acid/verification/verification1.HTM"
 file.src <- sprintf("%s.dat", strsplit(file.html.src, split = ".HTM")[[1]])
-fa.table = readHTMLTable(file.html.src, skip.rows = 1:3, header = F,
-                         colClasses = c("factor", "numeric", "numeric"))[[2]]
+fa.table = readHTMLTable(file.html.src,skip.rows = 1:3, header = F,
+                         colClasses = c("factor", "numeric", "numeric","numeric", "numeric", "numeric", "numeric"))[[2]][c(1,6:7)]
 
 names(fa.table) <- c("name", "start", "end")
+fa.table <- fa.table[1:8,]
 fa.table <- cbind(fa.table, m = 1)
+fa.table$m <- rnorm(8,1,0.5)
+fa.table$m[8] <- 1.1048
+ch.gen(file.src, fa.table, 9.887)
+
 fa.table <- fa.table[which(fa.table$name == "C20 0"),]
 fa.table$m[which(fa.table$name == "C20 0")] = -1
-ch.gen(file.src, fa.table, 46.666)
+ch.gen(file.src, fa.table, 9.887)
